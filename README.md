@@ -1,6 +1,7 @@
 # VIGENERE-CIPHER
 ## EX. NO: 4
- 
+### NAME   : Yuvan shankar M
+### Reg no : 212224220126
 
 ## IMPLEMETATION OF VIGENERE CIPHER
  
@@ -30,7 +31,71 @@ STEP-8: Repeat the above steps to generate the entire cipher text.
 
 
 ## PROGRAM
+```py
+# Function to perform Vigenere encryption
+def vigenere_encrypt(text, key):
+    result = ""
+    key = key.upper()
+    j = 0
 
+    for char in text:
+        if char.isalpha():
+            base = ord('A') if char.isupper() else ord('a')
+            k = ord(key[j % len(key)]) - ord('A')
+
+            encrypted_char = chr((ord(char) - base + k) % 26 + base)
+            result += encrypted_char
+            j += 1
+        else:
+            result += char
+
+    return result
+
+
+# Function to perform Vigenere decryption
+def vigenere_decrypt(text, key):
+    result = ""
+    key = key.upper()
+    j = 0
+
+    for char in text:
+        if char.isalpha():
+            base = ord('A') if char.isupper() else ord('a')
+            k = ord(key[j % len(key)]) - ord('A')
+
+            decrypted_char = chr((ord(char) - base - k) % 26 + base)
+            result += decrypted_char
+            j += 1
+        else:
+            result += char
+
+    return result
+
+
+# Main program
+message = input("Enter your secret message: ")
+key = input("Enter the key: ")
+
+# Check if key is empty
+if len(key) == 0:
+    print("Error: Key cannot be empty.")
+    exit()
+
+# Check if key contains only alphabets
+if not key.isalpha():
+    print("Error: Key must contain only alphabets.")
+    exit()
+
+# Encrypt the message
+encrypted = vigenere_encrypt(message, key)
+print("Encrypted Message:", encrypted)
+
+# Decrypt the message
+decrypted = vigenere_decrypt(encrypted, key)
+print("Decrypted Message:", decrypted)
+```
 ## OUTPUT
+<img width="1703" height="896" alt="image" src="https://github.com/user-attachments/assets/deac0dcc-77bc-43d0-bd83-c158625378b8" />
 
 ## RESULT
+The code executed successsfully.
