@@ -31,71 +31,120 @@ STEP-8: Repeat the above steps to generate the entire cipher text.
 
 
 ## PROGRAM
-```py
-# Function to perform Vigenere encryption
-def vigenere_encrypt(text, key):
-    result = ""
-    key = key.upper()
-    j = 0
+```c
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
 
-    for char in text:
-        if char.isalpha():
-            base = ord('A') if char.isupper() else ord('a')
-            k = ord(key[j % len(key)]) - ord('A')
+void vigenere_encrypt(char text[], char key[], char result[])
+{
+    int i, j = 0;
+    int len = strlen(text);
+    int keyLen = strlen(key);
 
-            encrypted_char = chr((ord(char) - base + k) % 26 + base)
-            result += encrypted_char
-            j += 1
-        else:
-            result += char
+    for(i = 0; i < len; i++)
+    {
+        char ch = text[i];
 
-    return result
+        if(isalpha(ch))
+        {
+            char base;
 
+            if(isupper(ch))
+                base = 'A';
+            else
+                base = 'a';
 
-# Function to perform Vigenere decryption
-def vigenere_decrypt(text, key):
-    result = ""
-    key = key.upper()
-    j = 0
+            int k = toupper(key[j % keyLen]) - 'A';
 
-    for char in text:
-        if char.isalpha():
-            base = ord('A') if char.isupper() else ord('a')
-            k = ord(key[j % len(key)]) - ord('A')
+            result[i] = ((ch - base + k) % 26) + base;
+            j++;
+        }
+        else
+        {
+            result[i] = ch;
+        }
+    }
 
-            decrypted_char = chr((ord(char) - base - k) % 26 + base)
-            result += decrypted_char
-            j += 1
-        else:
-            result += char
+    result[i] = '\0';
+}
 
-    return result
+void vigenere_decrypt(char text[], char key[], char result[])
+{
+    int i, j = 0;
+    int len = strlen(text);
+    int keyLen = strlen(key);
 
+    for(i = 0; i < len; i++)
+    {
+        char ch = text[i];
 
-# Main program
-message = input("Enter your secret message: ")
-key = input("Enter the key: ")
+        if(isalpha(ch))
+        {
+            char base;
 
-# Check if key is empty
-if len(key) == 0:
-    print("Error: Key cannot be empty.")
-    exit()
+            if(isupper(ch))
+                base = 'A';
+            else
+                base = 'a';
 
-# Check if key contains only alphabets
-if not key.isalpha():
-    print("Error: Key must contain only alphabets.")
-    exit()
+            int k = toupper(key[j % keyLen]) - 'A';
 
-# Encrypt the message
-encrypted = vigenere_encrypt(message, key)
-print("Encrypted Message:", encrypted)
+            result[i] = ((ch - base - k + 26) % 26) + base;
+            j++;
+        }
+        else
+        {
+            result[i] = ch;
+        }
+    }
 
-# Decrypt the message
-decrypted = vigenere_decrypt(encrypted, key)
-print("Decrypted Message:", decrypted)
+    result[i] = '\0';
+}
+
+int main()
+{
+    char message[200];
+    char key[100];
+    char encrypted[200];
+    char decrypted[200];
+    int i;
+
+    printf("Enter your secret message: ");
+    fgets(message, sizeof(message), stdin);
+
+    message[strcspn(message, "\n")] = '\0';
+
+    printf("Enter the key: ");
+    scanf("%s", key);
+
+    if(strlen(key) == 0)
+    {
+        printf("Error: Key cannot be empty.\n");
+        return 0;
+    }
+
+    for(i = 0; key[i] != '\0'; i++)
+    {
+        if(!isalpha(key[i]))
+        {
+            printf("Error: Key must contain only alphabets.\n");
+            return 0;
+        }
+    }
+
+    vigenere_encrypt(message, key, encrypted);
+    printf("Encrypted Message: %s\n", encrypted);
+
+    vigenere_decrypt(encrypted, key, decrypted);
+    printf("Decrypted Message: %s\n", decrypted);
+
+    return 0;
+}
 ```
 ## OUTPUT
-<img width="1703" height="896" alt="image" src="https://github.com/user-attachments/assets/deac0dcc-77bc-43d0-bd83-c158625378b8" />
+<img width="1718" height="909" alt="image" src="https://github.com/user-attachments/assets/12150ce2-30ef-4a2e-abd2-2b3ba0e04608" />
+
 
 ## RESULT
 The code executed successsfully.
